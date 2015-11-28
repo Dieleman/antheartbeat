@@ -20,11 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activity_AsyncScanHeartRateSampler"
-            android:label="Async Scan Demo Sampler"
-            android:screenOrientation="portrait" />
-
         <service
             android:name=".ANTReceive"
             android:exported="false" >

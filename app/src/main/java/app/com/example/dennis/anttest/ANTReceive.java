@@ -102,7 +102,7 @@ public class ANTReceive extends Service {
     protected void requestConnectToResult(final AsyncScanController.AsyncScanResultDeviceInfo asyncScanResultDeviceInfo)
     {
 
-              //  Toast.makeText(Activity_AsyncScanHeartRateSampler.this, "Found " + asyncScanResultDeviceInfo.getDeviceDisplayName() + " connecting..", Toast.LENGTH_LONG).show();
+                 Toast.makeText(ANTReceive.this, "Found " + asyncScanResultDeviceInfo.getDeviceDisplayName() + " connecting..", Toast.LENGTH_LONG).show();
                 //mTextView_Status.setText("Scanning for heart rate devices asynchronouly...");
 
                 // mTextView_Status.setText("Connecting to " + asyncScanResultDeviceInfo.getDeviceDisplayName());
