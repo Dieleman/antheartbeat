@@ -14,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
@@ -31,9 +32,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 
 public class MainActivity extends AppCompatActivity {
-
+    TextToSpeech t1;
     Intent i;
     TextView tvHeartBeatBPM;
     private SpeedometerGauge heartRateMeter, speedMeter;
@@ -86,7 +89,14 @@ public class MainActivity extends AppCompatActivity {
         speedMeter.setSpeed(0, true);
 
 
-
+        t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    t1.setLanguage(Locale.UK);
+                }
+            }
+        });
 
         Log.v("from main thread", "going to start thread");
 
@@ -211,6 +221,8 @@ public class MainActivity extends AppCompatActivity {
                     blinkingButton.startAnimation(mAnimation);
                     Log.d("MainActivity", "Start animation duration: " + duration);
                 }
+                //if(!t1.isSpeaking())
+                //    t1.speak(heartBeatBPM + "beats per minute", TextToSpeech.QUEUE_FLUSH, null);
             }
                 else {
                 heartRateMeter.setUnitsText("BPM");
