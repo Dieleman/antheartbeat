@@ -48,6 +48,7 @@ public class ANTReceive extends Service {
     /** indicates how to behave if the service is killed */
     int mStartMode;
 
+    long totalCount;
     /** interface for clients that bind */
     IBinder mBinder;
 
@@ -64,6 +65,7 @@ public class ANTReceive extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("ANTReceive", "Starting service");
+        totalCount = 0;
         initScanDisplay();
         handleReset();
         return mStartMode;
@@ -161,6 +163,7 @@ public class ANTReceive extends Service {
 
                             //if(!result.supportsRssi()) tv_rssi.setText("N/A");
                             Log.d("ANTReceive","Found HR Device, succes!");
+                            totalCount = 0;
                             Toast.makeText(ANTReceive.this, "Connected to device " + result.getDeviceName(), Toast.LENGTH_SHORT).show();
                             subscribeToHrEvents();
                             break;
@@ -311,11 +314,24 @@ public class ANTReceive extends Service {
                         + ((AntPlusHeartRatePcc.DataState.INITIAL_VALUE.equals(dataState)) ? "" : "");
                 final String textHeartBeatEventTime = String.valueOf(heartBeatEventTime)
                         + ((AntPlusHeartRatePcc.DataState.INITIAL_VALUE.equals(dataState)) ? "" : "");
-                Intent intent = new Intent("heartBeatChanged");
-                intent.putExtra("heartBeatBPM", textHeartRate);
-                //sendBroadcast(intent);
-                LocalBroadcastManager.getInstance(ANTReceive.this).sendBroadcast(intent);
-                Log.d("ANTReceive", "heartrate change detected: " + textHeartRate);
+
+                boolean heartRateReliable = !AntPlusHeartRatePcc.DataState.ZERO_DETECTED.equals(dataState);
+                boolean heartRateCountNew = totalCount != heartBeatCount;
+                totalCount = heartBeatCount;
+                if (heartRateReliable && heartRateCountNew) {
+                    Intent intent = new Intent("heartBeatChanged");
+                    intent.putExtra("heartBeatBPM", textHeartRate);
+                    intent.putExtra("heartBeatIsReliable", heartRateReliable);
+                    LocalBroadcastManager.getInstance(ANTReceive.this).sendBroadcast(intent);
+                }
+                if(!heartRateReliable) {
+                    Intent intent = new Intent("heartBeatChanged");
+                    intent.putExtra("heartBeatBPM", textHeartRate);
+                    intent.putExtra("heartBeatIsReliable", heartRateReliable);
+                    LocalBroadcastManager.getInstance(ANTReceive.this).sendBroadcast(intent);
+                }
+
+               // Log.d("ANTReceive", "heartrate change " + heartBeatCount + " detected: " + textHeartRate + " is valid: " + heartRateReliable);
             }
         });
     }

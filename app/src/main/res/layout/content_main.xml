@@ -11,21 +11,38 @@
     tools:showIn="@layout/activity_main" tools:context=".MainActivity">
 
 
-    <TextView
-        android:layout_width="wrap_content"
+    <app.com.example.dennis.anttest.SpeedometerGauge
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/tvHeartBeatBPM"
+        android:layout_width="match_parent"
+        android:padding="8dp"
+        android:id="@+id/heartRateMeter"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
+        android:layout_alignParentEnd="true" />
 
     <app.com.example.dennis.anttest.SpeedometerGauge
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:padding="8dp"
-        android:id="@+id/speedometer" />
+        android:id="@+id/speedMeter"
+        android:layout_below="@+id/heartRateMeter"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/blinkingButton"
+        android:src="@drawable/abc_btn_radio_to_on_mtrl_000"
+        android:alpha="1"
+        android:layout_alignBottom="@+id/heartRateMeter"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/blinkingButtonBackground"
+        android:src="@drawable/abc_btn_radio_to_on_mtrl_000"
+        android:layout_alignBottom="@+id/heartRateMeter"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
